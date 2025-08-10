@@ -6,86 +6,59 @@
 /*   By: eskomo <eskomo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 00:31:32 by eskomo            #+#    #+#             */
-/*   Updated: 2025/08/06 03:20:21 by eskomo           ###   ########.fr       */
+/*   Updated: 2025/08/10 06:09:05 by eskomo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
-#include "libft.h"
+#include "ft_printf.h"
 
-static	void	ft_print_str(char *str)
+static int	ft_dedecor(char spcif, va_list arg)
 {
-	while (*str)
+	if (spcif == '%')
+		return (ft_putchar_fd('%', 1));
+	else if (spcif == 'c')
+		return (ft_putchar_fd((char)va_arg(arg, int), 1));
+	else if (spcif == 's')
+		return (ft_putstr_fd(va_arg(arg, char *), 1));
+	else if (spcif == 'p')
 	{
-		write (1, str, 1);
-		str++;
+		write(1, "0x", 2);
+		return (ft_print_digit((unsigned long)va_arg(arg, void *),
+				16, 'L') + 2);
 	}
+	else if (spcif == 'd')
+		return (ft_putnbr_fd(va_arg(arg, int), 1));
+	else if (spcif == 'i')
+		return (ft_putnbr_fd((va_arg(arg, int)), 1));
+	else if (spcif == 'u')
+		return (ft_print_unsignd_fd((va_arg(arg, unsigned int)), 1));
+	else if (spcif == 'x')
+		return (ft_print_digit((va_arg(arg, unsigned int)), 16, 'L'));
+	else if (spcif == 'X')
+		return (ft_print_digit((va_arg(arg, unsigned int)), 16, 'U'));
+	else if (spcif == '%')
+		return (ft_putchar_fd('%', 1));
+	return (0);
 }
 
 int	ft_printf(const char *formstr, ...)
 {
 	va_list	arg;
-	char	c;
-	char	*s;
-	void	*p;
-	int		d;
-	char	percent;
+	int		counter;
 
-	va_list(arg, formstr);
+	counter = 0;
+	va_start(arg, formstr);
 	while (*formstr)
 	{
 		if (*formstr == '%')
 		{
-			formstr + 1;
-			if (*formstr == 'c')
-			{
-				c = va_arg(arg, char);
-				write (1, &c, 1);
-			}
-			else if (*formstr == 's')
-			{
-				s = va_arg(arg, char *);
-				ft_print_str(s);
-			}
-			else if (*formstr == 'p')
-			{
-				p = va_arg(arg, void *);
-				ft_print_hex((unsigned long)p);
-			}
-			else if (*formstr == 'd')
-			{
-				d = va_arg(arg, int);
-				
-			}
-			else if (*formstr == 'i')
-			{
-				i = va_arg(arg, int);
-				//print
-			}
-			else if (*formstr == 'u')
-			{
-				u = va_arg(arg, unsigned int);
-				//print
-			}
-			else if (*formstr == 'x')
-			{
-				x = va_arg(arg, /**/);
-				//print hexa in Lowercase
-			}
-			else if (*formstr == 'X')
-			{
-				X = va_arg(arg, /**/);
-				//print hexa in Uppercase
-			}
-			else if (*formstr == '%')
-			{
-				percent = va_arg(arg, char);
-				write(1, &percent, 1);
-			}
+			formstr++;
+			counter += ft_dedecor(*formstr, arg);
 		}
 		else
-			write (1, *formstr, 1);
-		formstr + 1;
+			counter += write (1, formstr, 1);
+		formstr++;
 	}
 	va_end(arg);
+	return (counter);
 }
