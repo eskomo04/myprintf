@@ -1,36 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_unsignd.c                                 :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eskomo <eskomo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 23:29:00 by eskomo            #+#    #+#             */
-/*   Updated: 2025/08/12 02:38:54 by eskomo           ###   ########.fr       */
+/*   Created: 2025/07/25 04:27:53 by eskomo            #+#    #+#             */
+/*   Updated: 2025/07/28 01:27:28 by eskomo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int	ft_print_unsignd_fd(unsigned int n, int fd)
+t_list	*ft_lstlast(t_list *lst)
 {
-	char			c;
-	unsigned long	num;
-	int				counter;
-	int				p;
-
-	counter = 0;
-	num = n;
-	if (num >= 10)
+	if (lst == NULL)
+		return (NULL);
+	while (lst->next != NULL)
 	{
-		p = ft_print_unsignd_fd(num / 10, fd);
-		if (p == -1)
-			return (-1);
-		counter += p;
+		lst = lst->next;
 	}
-	c = '0' + (num % 10);
-	p = write(fd, &c, 1);
-	if (p == -1)
-		return (-1);
-	return (counter + p);
+	return (lst);
 }

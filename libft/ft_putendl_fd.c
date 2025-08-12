@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_unsignd.c                                 :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eskomo <eskomo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 23:29:00 by eskomo            #+#    #+#             */
-/*   Updated: 2025/08/12 02:38:54 by eskomo           ###   ########.fr       */
+/*   Created: 2025/07/22 22:26:05 by eskomo            #+#    #+#             */
+/*   Updated: 2025/07/23 21:20:53 by eskomo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int	ft_print_unsignd_fd(unsigned int n, int fd)
+void	ft_putendl_fd(char *s, int fd)
 {
-	char			c;
-	unsigned long	num;
-	int				counter;
-	int				p;
+	int	i;
 
-	counter = 0;
-	num = n;
-	if (num >= 10)
+	i = 0;
+	while (s[i])
 	{
-		p = ft_print_unsignd_fd(num / 10, fd);
-		if (p == -1)
-			return (-1);
-		counter += p;
+		write(fd, &s[i], 1);
+		i++;
 	}
-	c = '0' + (num % 10);
-	p = write(fd, &c, 1);
-	if (p == -1)
-		return (-1);
-	return (counter + p);
+	write(fd, "\n", 1);
 }

@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_unsignd.c                                 :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eskomo <eskomo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 23:29:00 by eskomo            #+#    #+#             */
-/*   Updated: 2025/08/12 02:38:54 by eskomo           ###   ########.fr       */
+/*   Created: 2025/07/17 05:00:10 by eskomo            #+#    #+#             */
+/*   Updated: 2025/07/23 23:33:45 by eskomo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int	ft_print_unsignd_fd(unsigned int n, int fd)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char			c;
-	unsigned long	num;
-	int				counter;
-	int				p;
+	size_t			total_size;
+	size_t			i;
+	unsigned char	*ptr;
 
-	counter = 0;
-	num = n;
-	if (num >= 10)
+	total_size = count * size;
+	i = 0;
+	ptr = malloc(total_size);
+	if (!ptr)
 	{
-		p = ft_print_unsignd_fd(num / 10, fd);
-		if (p == -1)
-			return (-1);
-		counter += p;
+		return (NULL);
 	}
-	c = '0' + (num % 10);
-	p = write(fd, &c, 1);
-	if (p == -1)
-		return (-1);
-	return (counter + p);
+	while (i < total_size)
+	{
+		ptr[i] = 0;
+		i++;
+	}
+	return ((void *)ptr);
 }

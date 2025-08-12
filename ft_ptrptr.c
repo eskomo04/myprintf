@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_unsignd.c                                 :+:      :+:    :+:   */
+/*   ft_ptrptr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eskomo <eskomo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 23:29:00 by eskomo            #+#    #+#             */
-/*   Updated: 2025/08/12 02:38:54 by eskomo           ###   ########.fr       */
+/*   Created: 2025/08/10 23:02:55 by eskomo            #+#    #+#             */
+/*   Updated: 2025/08/11 01:19:42 by eskomo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_print_unsignd_fd(unsigned int n, int fd)
+int	ft_ptrptr(void *ptr)
 {
-	char			c;
-	unsigned long	num;
-	int				counter;
-	int				p;
+	int	counter;
+	int	p;
 
 	counter = 0;
-	num = n;
-	if (num >= 10)
-	{
-		p = ft_print_unsignd_fd(num / 10, fd);
-		if (p == -1)
-			return (-1);
-		counter += p;
-	}
-	c = '0' + (num % 10);
-	p = write(fd, &c, 1);
+	if ((void *)ptr == NULL)
+		return (ft_putstr_fd(PTRNULL, 1));
+	p = write(1, "0x", 2);
+	if (p == -1)
+		return (-1);
+	counter += p;
+	p = ft_print_hex((unsigned long long) ptr, 16, 'L');
 	if (p == -1)
 		return (-1);
 	return (counter + p);

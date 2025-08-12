@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_unsignd.c                                 :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eskomo <eskomo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 23:29:00 by eskomo            #+#    #+#             */
-/*   Updated: 2025/08/12 02:38:54 by eskomo           ###   ########.fr       */
+/*   Created: 2025/07/15 19:08:28 by eskomo            #+#    #+#             */
+/*   Updated: 2025/07/23 23:36:03 by eskomo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int	ft_print_unsignd_fd(unsigned int n, int fd)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	char			c;
-	unsigned long	num;
-	int				counter;
-	int				p;
+	const unsigned char	*ptr1;
+	const unsigned char	*ptr2;
+	size_t				i;
 
-	counter = 0;
-	num = n;
-	if (num >= 10)
+	ptr1 = (const unsigned char *)s1;
+	ptr2 = (const unsigned char *)s2;
+	i = 0;
+	while (i < n)
 	{
-		p = ft_print_unsignd_fd(num / 10, fd);
-		if (p == -1)
-			return (-1);
-		counter += p;
+		if (ptr1[i] != ptr2[i])
+		{
+			return (ptr1[i] - ptr2[i]);
+		}
+		i++;
 	}
-	c = '0' + (num % 10);
-	p = write(fd, &c, 1);
-	if (p == -1)
-		return (-1);
-	return (counter + p);
+	return (0);
 }

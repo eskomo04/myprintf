@@ -1,36 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_unsignd.c                                 :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eskomo <eskomo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/09 23:29:00 by eskomo            #+#    #+#             */
-/*   Updated: 2025/08/12 02:38:54 by eskomo           ###   ########.fr       */
+/*   Created: 2025/07/22 22:32:17 by eskomo            #+#    #+#             */
+/*   Updated: 2025/08/12 03:12:17 by eskomo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int	ft_print_unsignd_fd(unsigned int n, int fd)
+int	ft_putnbr_fd(long n, int fd)
 {
-	char			c;
-	unsigned long	num;
-	int				counter;
-	int				p;
+	char	c;
+	int		counter;
+	int		p;
 
 	counter = 0;
-	num = n;
-	if (num >= 10)
+	if (n < 0)
 	{
-		p = ft_print_unsignd_fd(num / 10, fd);
+		if (write(fd, "-", 1) == -1)
+			return (-1);
+		counter++;
+		n = -n;
+	}
+	if (n >= 10)
+	{
+		p = ft_putnbr_fd(n / 10, fd);
 		if (p == -1)
 			return (-1);
 		counter += p;
 	}
-	c = '0' + (num % 10);
+	c = '0' + (n % 10);
 	p = write(fd, &c, 1);
 	if (p == -1)
 		return (-1);
-	return (counter + p);
+	counter += p;
+	return (counter);
 }
